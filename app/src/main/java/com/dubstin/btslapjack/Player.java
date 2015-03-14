@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Player {
     private Hand hand = new Hand();
     private String name;
+    private int handCountOffSet = 0;
 
     Player() {
         name = "Anonymous";
@@ -20,6 +21,10 @@ public class Player {
 
     public void setCards(ArrayList<Card> cards) {
         hand.addCards(cards);
+    }
+
+    public void increaseCardCount(int amount) {
+        handCountOffSet += amount;
     }
 
     public void grabPile(ArrayList<Card> pile) {
@@ -39,6 +44,6 @@ public class Player {
     }
 
     public int getHandCount() {
-        return hand.getCount();
+        return hand.getCount() + handCountOffSet;
     }
 }

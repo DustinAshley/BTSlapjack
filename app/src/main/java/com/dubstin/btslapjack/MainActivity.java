@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Handler;
@@ -27,12 +28,13 @@ import android.widget.Toast;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
     // Debugging
-    private static final String TAG = "BluetoothChat";
+    private static final String TAG = "Bluetooth Slap Jack";
     private static final boolean isDebugMode = true;
 
     // Message types sent from the BluetoothChatService Handler
@@ -59,16 +61,19 @@ public class MainActivity extends ActionBarActivity {
     private static final String KEY_PLAYER2CARDS = "playerTwoCards";
     private static final String KEY_PLAYER1NAME = "playerOneName";
     private static final String KEY_PLAYER2NAME = "playerTwoName";
+    private static final String KEY_ISCONNECTED = "isConnected";
 
     // Layout Views
     private TextView title;
     private Button startButton;
 
-    private int SCREEN_WIDTH, SCREEN_HEIGHT, numberOfJacksPlayed, numberOfDecks;
+    private int SCREEN_WIDTH, SCREEN_HEIGHT, numberOfJacksPlayed, numberOfDecks, cardNumber = -1;
     private long dealTimestamp, slapTimestamp;
+    private String[] mySlapTimes = new String[54], connectedDeviceSlapTimes = new String[54];
     private Button mainButton;
     LinearLayout gameContainer, connectContainer;
-    private boolean isConnected, isReadyToStart, isConnectedDeviceReadyToStart;
+    private boolean isConnected = false, isReadyToStart = false,
+            isConnectedDeviceReadyToStart = false;
     private TextView deckCountLabel, pileCountLabel, playerOneNameLabel, playerTwoNameLabel,
             playerOneHandCountLabel, playerTwoHandCountLabel, topCardLabel, timestampLabel,
             winnerLabel;
@@ -84,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
             connectedDeviceBlueToothAddress = null;
     private StringBuffer sendStringBuffer;
     private BluetoothAdapter bluetoothAdapter = null;
-    private BluetoothChatService chatService = null;
+    private BluetoothCommunicationService bluetoothCommunicationService = null;
     private NotificationManager notificationManager;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
@@ -102,6 +107,7 @@ public class MainActivity extends ActionBarActivity {
         initializeButtons();
         initializeContainers();
         initializeLabels();
+        fillSlapTimeArrays();
         if (savedInstanceState != null) {
             numberOfDecks = savedInstanceState.getInt(KEY_NUMBEROFDECKS);
             topCard = savedInstanceState.getParcelable(KEY_TOPCARD);
@@ -114,11 +120,12 @@ public class MainActivity extends ActionBarActivity {
             playerOne.setName(savedInstanceState.getString(KEY_PLAYER1NAME));
             playerTwo.setName(savedInstanceState.getString(KEY_PLAYER2NAME));
             timestampLabel.setText(savedInstanceState.getString(KEY_TIMESTAMP));
+            isConnected = savedInstanceState.getBoolean(KEY_ISCONNECTED);
         } else {
-            playerOne.setName("Dustin");
-            playerTwo.setName("Bot");
+            playerOne.setName("You");
+            playerTwo.setName("Opponent");
             numberOfDecks = 1;
-            deck = new Deck(true, true);
+            deck = new Deck(false, true);
         }
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothAddress = bluetoothAdapter.getAddress();
@@ -142,7 +149,29 @@ public class MainActivity extends ActionBarActivity {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         } else {
-            if (chatService == null) setupGame();
+            if (bluetoothCommunicationService == null) setupGame();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.i(TAG, "Entered the onSaveInstanceState() method");
+        savedInstanceState.putInt(KEY_NUMBEROFDECKS, numberOfDecks);
+        savedInstanceState.putParcelable(KEY_DECK, deck);
+        savedInstanceState.putParcelableArrayList(KEY_PILECARDS, pile);
+        savedInstanceState.putParcelable(KEY_TOPCARD, topCard);
+        savedInstanceState.putParcelableArrayList(KEY_PLAYER1CARDS, playerOne.getCards());
+        savedInstanceState.putParcelableArrayList(KEY_PLAYER2CARDS, playerTwo.getCards());
+        savedInstanceState.putString(KEY_PLAYER1NAME, playerOne.getName());
+        savedInstanceState.putString(KEY_PLAYER2NAME, playerTwo.getName());
+        savedInstanceState.putString(KEY_TIMESTAMP, timestampLabel.getText().toString());
+        savedInstanceState.putBoolean(KEY_ISCONNECTED, isConnected);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.orientation != Configuration.ORIENTATION_LANDSCAPE) {
+            super.onConfigurationChanged(newConfig);
         }
     }
 
@@ -154,19 +183,19 @@ public class MainActivity extends ActionBarActivity {
         }
         notificationManager.cancel(SIMPLE_NOTFICATION_ID);
         Log.i("FNORD", "" + getIntent());
-        if (chatService != null) {
-            if (chatService.getState() == BluetoothChatService.STATE_NONE) {
-                chatService.start();
+        if (bluetoothCommunicationService != null) {
+            if (bluetoothCommunicationService.getState() == BluetoothCommunicationService.STATE_NONE) {
+                bluetoothCommunicationService.start();
                 String address = prefs.getString(PREFS_LAST_DEVICE, null);
                 Log.i(TAG, " Address: " + address);
-                if (chatService.getState() != BluetoothChatService.STATE_CONNECTED && address != null) {
+                if (bluetoothCommunicationService.getState() != BluetoothCommunicationService.STATE_CONNECTED && address != null) {
                     if (bluetoothAdapter.isDiscovering()) {
                         bluetoothAdapter.cancelDiscovery();
                     }
                     BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
                     Log.i(TAG, " DeviceAddress:" + device.getAddress());
                     Log.i(TAG, " DeviceName:" + device.getName());
-                    chatService.connect(device);
+                    bluetoothCommunicationService.connect(device);
                 }
             }
         }
@@ -198,9 +227,11 @@ public class MainActivity extends ActionBarActivity {
                     startDealing();
                 }
                 sendBluetoothMessage(message);
+                startButton.setVisibility(View.INVISIBLE);
             }
         });
-        chatService = new BluetoothChatService(this, bluetoothMessageHandler);
+        if (!isConnected)
+        bluetoothCommunicationService = new BluetoothCommunicationService(this, bluetoothMessageHandler);
         sendStringBuffer = new StringBuffer("");
     }
 
@@ -226,8 +257,9 @@ public class MainActivity extends ActionBarActivity {
         if (isDebugMode) {
             Log.e(TAG, "Entered onDestroy()");
         }
-        if (chatService != null) {
-            chatService.stop();
+        if (bluetoothCommunicationService != null && isFinishing()) {
+            Log.i(TAG, "Closing application.");
+            bluetoothCommunicationService.stop();
         }
     }
 
@@ -244,7 +276,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void sendBluetoothMessage(String message) {
-        if (chatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+        if (bluetoothCommunicationService.getState() != BluetoothCommunicationService.STATE_CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
             showConnectContainer();
             return;
@@ -253,7 +285,7 @@ public class MainActivity extends ActionBarActivity {
         if (message.length() > 0) {
             byte[] send = message.getBytes();
             Log.i(TAG, "Sending message: " + message);
-            chatService.write(send);
+            bluetoothCommunicationService.write(send);
             sendStringBuffer.setLength(0);
         }
     }
@@ -268,18 +300,18 @@ public class MainActivity extends ActionBarActivity {
                         Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                     }
                     switch (msg.arg1) {
-                        case BluetoothChatService.STATE_CONNECTED:
+                        case BluetoothCommunicationService.STATE_CONNECTED:
                             title.setText(R.string.title_connected_to);
                             title.append(connectedDeviceName);
                             sendBluetoothMessage("id::" + bluetoothAddress);
                             isConnected = true;
                             showGameContainer();
                             break;
-                        case BluetoothChatService.STATE_CONNECTING:
+                        case BluetoothCommunicationService.STATE_CONNECTING:
                             title.setText(R.string.title_connecting);
                             break;
-                        case BluetoothChatService.STATE_LISTEN:
-                        case BluetoothChatService.STATE_NONE:
+                        case BluetoothCommunicationService.STATE_LISTEN:
+                        case BluetoothCommunicationService.STATE_NONE:
                             title.setText(R.string.title_not_connected);
                             showConnectContainer();
                             break;
@@ -310,17 +342,21 @@ public class MainActivity extends ActionBarActivity {
                                 sendBluetoothMessage("seed::" + String.valueOf(seed));
                                 rnd.setSeed(seed);
                                 deck.shuffle(rnd);
+                                startButton.setVisibility(View.VISIBLE);
                             }
-
                             break;
                         case "seed":
                             Log.i(TAG, "Got Deck Seed: " + separated[1]);
                             Random rnd = new Random();
                             rnd.setSeed(Long.parseLong(separated[1]));
+                            Log.i(TAG, "seeding with:" + String.valueOf(Long.parseLong(separated[1])));
                             deck.shuffle(rnd);
+                            startButton.setVisibility(View.VISIBLE);
                             break;
-                        case "timestamp":
-                            Log.i(TAG, "Got Time Stamp: " + separated[1]);
+                        case "slapTime":
+                            Log.i(TAG, "Got Time Stamp: " + separated[1] + " :: " + separated[2] + " :: " + separated[3]);
+                            connectedDeviceSlapTimes[Integer.parseInt(separated[2])] = separated[1] + "::" + separated[3];
+                                    //Long.parseLong(separated[1]);
                             break;
                         default:
                             Log.i(TAG, "Received an unrecognized message: " + readMessage);
@@ -329,10 +365,10 @@ public class MainActivity extends ActionBarActivity {
                 case MESSAGE_DEVICE_NAME:
                     connectedDeviceName = msg.getData().getString(DEVICE_NAME);
                     Toast.makeText(getApplicationContext(), "Connected to " + connectedDeviceName, Toast.LENGTH_SHORT).show();
+                    showGameContainer();
                     break;
                 case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
                     break;
                 case MESSAGE_SAVE_DEVICE:
                     String address = msg.obj.toString();
@@ -364,10 +400,11 @@ public class MainActivity extends ActionBarActivity {
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
                 if (resultCode == Activity.RESULT_OK) {
-                    String address = data.getExtras()
-                            .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                    String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
                     BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
-                    chatService.connect(device);
+                    if (!isConnected) {
+                        bluetoothCommunicationService.connect(device);
+                    }
                 }
                 break;
             case REQUEST_ENABLE_BT:
@@ -391,9 +428,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.scan:
-                Intent serverIntent = new Intent(this, DeviceListActivity.class);
-                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+            case R.id.connect:
+                if (isConnected) {
+                    Toast.makeText(this, R.string.already_connected, Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent serverIntent = new Intent(this, DeviceListActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+                }
                 return true;
             case R.id.discoverable:
               makeDiscoverable();
@@ -503,16 +544,24 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void givePileToPlayer(int pileSize, Player p) {
+            p.increaseCardCount(pileSize);
+    }
+
     private View.OnClickListener doSlapCard = new View.OnClickListener() {
         public void onClick(View v) {
             cardPicture.setBackgroundResource(R.drawable._card_back);
             slapCard();
             updateScreen();
-            if (isDebugMode) {
-                sendBluetoothMessage("Default Test Message");
-            }
         }
     };
+
+    private void fillSlapTimeArrays() {
+//        Arrays.fill(mySlapTimes, Long.MAX_VALUE);
+//        Arrays.fill(connectedDeviceSlapTimes, Long.MAX_VALUE);
+        Arrays.fill(mySlapTimes, null);
+        Arrays.fill(connectedDeviceSlapTimes, null);
+    }
 
     public void startGame() {
 
@@ -549,6 +598,7 @@ public class MainActivity extends ActionBarActivity {
     public void dealCard() {
         if (deck.getCardCount() > 0 && !isGameOver()) {
             topCard = new Card(deck.dealCard());
+            cardNumber++;
             if (topCard.getValue() == 11) {
                 numberOfJacksPlayed++;
                 Log.i(TAG, "Dealt Jack: #" + String.valueOf(numberOfJacksPlayed));
@@ -578,7 +628,6 @@ public class MainActivity extends ActionBarActivity {
         } else {
             cardPicture.setBackgroundResource(R.drawable._card_back);
         }
-
     }
 
     private View.OnClickListener goToMain = new View.OnClickListener() {
@@ -588,16 +637,20 @@ public class MainActivity extends ActionBarActivity {
     };
 
     public void slapCard() {
-        slapTimestamp = new Date().getTime();
         if (topCard != null) {
+            slapTimestamp = new Date().getTime();
+            long slapTime = slapTimestamp - dealTimestamp;
+            String slapMessage = "slapTime::"+ String.valueOf(slapTime);
+            slapMessage += "::" + String.valueOf(cardNumber);
             if (topCard.getValue() == 11) {
-                givePileToPlayer(pile, playerOne);
-                long timeStamp = slapTimestamp - dealTimestamp;
-                timestampLabel.setText(String.valueOf(timeStamp/1000.00) + " seconds");
-                sendBluetoothMessage("timestamp::" + String.valueOf(timeStamp));
-            //} else {
-            //    givePileToPlayer(pile, playerTwo);
+                slapMessage += "::true";
+                mySlapTimes[cardNumber] = String.valueOf(slapTime) + "::true";
+            } else {
+                slapMessage += "::false";
+                mySlapTimes[cardNumber] = String.valueOf(slapTime) + "::false";
             }
+            timestampLabel.setText(String.valueOf(slapTime/1000.00) + " seconds");
+            sendBluetoothMessage(slapMessage);
             topCard = null;
             showCard(topCard);
             if (isGameOver()) {
@@ -618,6 +671,47 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private Player determineWinner() {
+        int pileCount = 0;
+        String[] separated;
+        for (int i = 0; i < mySlapTimes.length; i++) {
+            pileCount++;
+            if (mySlapTimes[i] != null) {
+                separated = mySlapTimes[i].split("::");
+                if (connectedDeviceSlapTimes[i] != null) {
+                    int mySlapTime = Integer.parseInt(separated[0]);
+                    separated = connectedDeviceSlapTimes[i].split("::");
+                    int connectedDeviceSlapTime = Integer.parseInt(separated[0]);
+                    if (separated[1] == "true") {
+                        if (mySlapTime < connectedDeviceSlapTime) {
+                            givePileToPlayer(pileCount, playerOne);
+                        } else {
+                            givePileToPlayer(pileCount, playerTwo);
+                        }
+                    } else {
+                        if (mySlapTime < connectedDeviceSlapTime) {
+                            givePileToPlayer(pileCount, playerTwo);
+                        } else {
+                            givePileToPlayer(pileCount, playerOne);
+                        }
+                    }
+                } else {
+                    if (separated[1] == "true") {
+                        givePileToPlayer(pileCount, playerOne);
+                    } else {
+                        givePileToPlayer(pileCount, playerTwo);
+                    }
+                }
+                pileCount = 0;
+            } else if (connectedDeviceSlapTimes[i] != null) {
+                separated = connectedDeviceSlapTimes[i].split("::");
+                if (separated[1] == "true") {
+                    givePileToPlayer(pileCount, playerTwo);
+                } else {
+                    givePileToPlayer(pileCount, playerOne);
+                }
+                pileCount = 0;
+            }
+        }
         return (playerOne.getHandCount() > playerTwo.getHandCount()) ? playerOne : playerTwo;
     }
 
