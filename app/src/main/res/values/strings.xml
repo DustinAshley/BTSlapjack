@@ -17,7 +17,7 @@
     <string name="already_connected">You are already connected.</string>
     <string name="bt_not_enabled_leaving">Bluetooth is not enabled.</string>
     <string name="title_connecting">Connecting...</string>
-    <string name="title_connected_to">Connected: </string>
+    <string name="title_connected">Connected</string>
     <string name="title_not_connected">Not Connected</string>
 
     <!--  DeviceListActivity -->
