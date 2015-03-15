@@ -59,7 +59,8 @@ public class MainActivity extends ActionBarActivity {
             KEY_PLAYER2CARDS = "playerTwoCards",
             KEY_PLAYER1NAME = "playerOneName",
             KEY_PLAYER2NAME = "playerTwoName",
-            KEY_ISCONNECTED = "isConnected";
+            KEY_ISCONNECTED = "isConnected",
+            DEFAULTSLAPTIME = String.valueOf(Integer.MAX_VALUE) + "::false";
 
     private int SCREEN_WIDTH, SCREEN_HEIGHT,
             numberOfJacksDealt = 0,
@@ -416,8 +417,8 @@ public class MainActivity extends ActionBarActivity {
     };
 
     private void fillSlapTimeArrays() {
-        Arrays.fill(mySlapTimes, null);
-        Arrays.fill(connectedDeviceSlapTimes, null);
+        Arrays.fill(mySlapTimes, DEFAULTSLAPTIME);
+        Arrays.fill(connectedDeviceSlapTimes, DEFAULTSLAPTIME);
     }
 
     public void startGame() {
@@ -489,7 +490,6 @@ public class MainActivity extends ActionBarActivity {
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
-                            Log.i(TAG, "HERE111111");
                             sendBluetoothMessage("passedAllJacks");
                         }
                     }, 1000);
@@ -504,7 +504,8 @@ public class MainActivity extends ActionBarActivity {
             showCard(topCard);
             if (haveBothDevicesPassedAllJacks()) {
                 Player winner = determineWinner();
-                winnerLabel.setText(winner.getName() + " wins!");
+                winnerLabel.setText(winner.getName()
+                        + (winner == playerOne ? " win!" : " wins!"));
                 updateScreen();
             }
             pile.clear();
@@ -533,9 +534,9 @@ public class MainActivity extends ActionBarActivity {
         String[] separated;
         for (int i = 0; i < mySlapTimes.length; i++) {
             pileCount++;
-            if (mySlapTimes[i] != null) {
+            if (mySlapTimes[i] != DEFAULTSLAPTIME) {
                 separated = mySlapTimes[i].split("::");
-                if (connectedDeviceSlapTimes[i] != null) {
+                if (connectedDeviceSlapTimes[i] != DEFAULTSLAPTIME) {
                     int mySlapTime = Integer.parseInt(separated[0]);
                     separated = connectedDeviceSlapTimes[i].split("::");
                     int connectedDeviceSlapTime = Integer.parseInt(separated[0]);
@@ -560,7 +561,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
                 pileCount = 0;
-            } else if (connectedDeviceSlapTimes[i] != null) {
+            } else if (connectedDeviceSlapTimes[i] != DEFAULTSLAPTIME) {
                 separated = connectedDeviceSlapTimes[i].split("::");
                 if (separated[1] == "true") {
                     givePileToPlayer(pileCount, playerTwo);
@@ -678,7 +679,7 @@ public class MainActivity extends ActionBarActivity {
                             if (haveBothDevicesPassedAllJacks()) {
                                 Player winner = determineWinner();
                                 winnerLabel.setText(winner.getName()
-                                        + (winner == playerOne ? "win!" : "wins!"));
+                                        + (winner == playerOne ? " win!" : " wins!"));
                                 updateScreen();
                             }
                             break;
