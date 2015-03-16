@@ -69,8 +69,9 @@ public class MainActivity extends ActionBarActivity {
             cardNumber = -1;
     private long dealTimestamp,
             slapTimestamp;
-    private String[] mySlapTimes = new String[54],
-            connectedDeviceSlapTimes = new String[54];
+    private ArrayList<String> mySlapTimes = new ArrayList<String>(),
+            connectedDeviceSlapTimes = new ArrayList<String>();
+
     private Button mainButton,
             startButton;
     LinearLayout gameContainer,
@@ -80,7 +81,8 @@ public class MainActivity extends ActionBarActivity {
             isConnectedDeviceReadyToStart = false,
             isGameStarted = false,
             didPassAllJacks = false,
-            didConnectedDevicePassAllJacks = false;
+            didConnectedDevicePassAllJacks = false,
+            isGameOver = false;
     private TextView title,
             deckCountLabel,
             pileCountLabel,
@@ -289,18 +291,8 @@ public class MainActivity extends ActionBarActivity {
             Log.d(TAG, "Entered setupGame()");
         }
         startButton.setVisibility(View.VISIBLE);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (!isGameStarted) {
-                    isReadyToStart = true;
-                    if (isReadyToStart && isConnectedDeviceReadyToStart) {
-                        startGame();
-                    }
-                    sendBluetoothMessage("start");
-                    startButton.setText("Waiting for Opponent...");
-                }
-            }
-        });
+        startButton.setOnClickListener(startButtonClick);
+
         if (!isConnected) {
             bluetoothCommunicationService = new BluetoothCommunicationService(this, bluetoothMessageHandler);
         }
@@ -416,9 +408,29 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+    private View.OnClickListener startButtonClick = new View.OnClickListener() {
+        public  void onClick(View v) {
+            if (isGameOver) {
+                Intent i = new Intent(MainActivity.this, StatisticsActivity.class);
+                i.putStringArrayListExtra("mySlapTimes", mySlapTimes);
+                i.putExtra("connectedDeviceSlapTimes", connectedDeviceSlapTimes);
+                startActivity(i);
+            } else if (!isGameStarted) {
+                isReadyToStart = true;
+                if (isReadyToStart && isConnectedDeviceReadyToStart) {
+                    startGame();
+                }
+                sendBluetoothMessage("start");
+                startButton.setText("Waiting for Opponent...");
+            }
+        }
+    };
+
     private void fillSlapTimeArrays() {
-        Arrays.fill(mySlapTimes, DEFAULTSLAPTIME);
-        Arrays.fill(connectedDeviceSlapTimes, DEFAULTSLAPTIME);
+        for (int i = 0; i < 54; i++) {
+            mySlapTimes.add(DEFAULTSLAPTIME);
+            connectedDeviceSlapTimes.add(DEFAULTSLAPTIME);
+        }
     }
 
     public void startGame() {
@@ -482,7 +494,7 @@ public class MainActivity extends ActionBarActivity {
             slapMessage += "::" + String.valueOf(cardNumber);
             if (topCard.getValue() == 11) {
                 slapMessage += "::true";
-                mySlapTimes[cardNumber] = String.valueOf(slapTime) + "::true";
+                mySlapTimes.set(cardNumber, (String.valueOf(slapTime) + "::true"));
                 numberOfJacksPassed++;
                 if (numberOfJacksPassed == numberOfDecks * 4 ) {
                     didPassAllJacks = true;
@@ -496,7 +508,7 @@ public class MainActivity extends ActionBarActivity {
                 }
             } else {
                 slapMessage += "::false";
-                mySlapTimes[cardNumber] = String.valueOf(slapTime) + "::false";
+                mySlapTimes.set(cardNumber, (String.valueOf(slapTime) + "::false"));
             }
             timestampLabel.setText(String.valueOf(slapTime/1000.00) + " seconds");
             sendBluetoothMessage(slapMessage);
@@ -526,19 +538,21 @@ public class MainActivity extends ActionBarActivity {
 
     private void doGameOver() {
         isGameStarted = false;
+        isGameOver = true;
+        startButton.setText("View Statistics");
         cardPicture.setBackgroundResource(R.drawable._card_back);
     }
 
     private Player determineWinner() {
         int pileCount = 0;
         String[] separated;
-        for (int i = 0; i < mySlapTimes.length; i++) {
+        for (int i = 0; i < mySlapTimes.size(); i++) {
             pileCount++;
-            if (mySlapTimes[i] != DEFAULTSLAPTIME) {
-                separated = mySlapTimes[i].split("::");
-                if (connectedDeviceSlapTimes[i] != DEFAULTSLAPTIME) {
+            if (mySlapTimes.get(i) != DEFAULTSLAPTIME) {
+                separated = mySlapTimes.get(i).split("::");
+                if (connectedDeviceSlapTimes.get(i) != DEFAULTSLAPTIME) {
                     int mySlapTime = Integer.parseInt(separated[0]);
-                    separated = connectedDeviceSlapTimes[i].split("::");
+                    separated = connectedDeviceSlapTimes.get(i).split("::");
                     int connectedDeviceSlapTime = Integer.parseInt(separated[0]);
                     if (separated[1] == "true") {
                         if (mySlapTime < connectedDeviceSlapTime) {
@@ -561,8 +575,8 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
                 pileCount = 0;
-            } else if (connectedDeviceSlapTimes[i] != DEFAULTSLAPTIME) {
-                separated = connectedDeviceSlapTimes[i].split("::");
+            } else if (connectedDeviceSlapTimes.get(i) != DEFAULTSLAPTIME) {
+                separated = connectedDeviceSlapTimes.get(i).split("::");
                 if (separated[1] == "true") {
                     givePileToPlayer(pileCount, playerTwo);
                 } else {
@@ -671,7 +685,8 @@ public class MainActivity extends ActionBarActivity {
                             break;
                         case "slapTime":
                             Log.i(TAG, "Got Time Stamp: " + separated[1] + " :: " + separated[2] + " :: " + separated[3]);
-                            connectedDeviceSlapTimes[Integer.parseInt(separated[2])] = separated[1] + "::" + separated[3];
+                            connectedDeviceSlapTimes.set((Integer.parseInt(separated[2])),
+                                    (separated[1] + "::" + separated[3]));
                             break;
                         case "passedAllJacks":
                             Log.i(TAG, "Got 'all Jacks passed' signal.");
