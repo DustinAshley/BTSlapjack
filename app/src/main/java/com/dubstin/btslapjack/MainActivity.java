@@ -73,7 +73,8 @@ public class MainActivity extends ActionBarActivity {
             connectedDeviceSlapTimes = new ArrayList<String>();
 
     private Button mainButton,
-            startButton;
+            startButton,
+            restartButton;
     LinearLayout gameContainer,
             connectContainer;
     private boolean isConnected = false,
@@ -180,6 +181,9 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             case R.id.action_toggle_view:
                 toggleView();
+                return true;
+            case R.id.restart:
+                restartActivity();
         }
         return false;
     }
@@ -290,9 +294,8 @@ public class MainActivity extends ActionBarActivity {
         if (isDebugMode) {
             Log.d(TAG, "Entered setupGame()");
         }
+        restartButton.setVisibility(View.GONE);
         startButton.setVisibility(View.VISIBLE);
-        startButton.setOnClickListener(startButtonClick);
-
         if (!isConnected) {
             bluetoothCommunicationService = new BluetoothCommunicationService(this, bluetoothMessageHandler);
         }
@@ -337,7 +340,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void initializeLabels() {
         deckCountLabel = (TextView) findViewById(R.id.deckCardCount);
-        pileCountLabel = (TextView) findViewById(R.id.pileCount);
         playerOneNameLabel = (TextView) findViewById(R.id.playerOneName);
         playerTwoNameLabel = (TextView) findViewById(R.id.playerTwoName);
         playerOneHandCountLabel = (TextView) findViewById(R.id.playerOneHandCount);
@@ -356,10 +358,12 @@ public class MainActivity extends ActionBarActivity {
         cardPicture = (ImageButton) findViewById(R.id.cardPicture);
         cardPicture.setOnClickListener(doSlapCard);
         startButton = (Button) findViewById(R.id.button_start);
+        startButton.setOnClickListener(startButtonClick);
+        restartButton = (Button) findViewById(R.id.button_restart);
+        restartButton.setOnClickListener(restartButtonClick);
     }
 
     private void updateScreen() {
-        updatePileCount();
         updateDeckCount();
         updatePlayerOneLabels();
         updatePlayerTwoLabels();
@@ -368,10 +372,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateDeckCount() {
         deckCountLabel.setText("Cards in Deck: " + String.valueOf(deck.getCardCount()));
-    }
-
-    private void updatePileCount() {
-        pileCountLabel.setText("Cards in Pile: " + String.valueOf(pile.size()));
     }
 
     private void updatePlayerOneLabels() {
@@ -413,7 +413,7 @@ public class MainActivity extends ActionBarActivity {
             if (isGameOver) {
                 Intent i = new Intent(MainActivity.this, StatisticsActivity.class);
                 i.putStringArrayListExtra("mySlapTimes", mySlapTimes);
-                i.putExtra("connectedDeviceSlapTimes", connectedDeviceSlapTimes);
+                i.putStringArrayListExtra("connectedDeviceSlapTimes", connectedDeviceSlapTimes);
                 startActivity(i);
             } else if (!isGameStarted) {
                 isReadyToStart = true;
@@ -426,6 +426,18 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+    private View.OnClickListener restartButtonClick = new View.OnClickListener() {
+        public void onClick(View v) {
+            restartActivity();
+        }
+    };
+
+    private void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
     private void fillSlapTimeArrays() {
         for (int i = 0; i < 54; i++) {
             mySlapTimes.add(DEFAULTSLAPTIME);
@@ -435,19 +447,22 @@ public class MainActivity extends ActionBarActivity {
 
     public void startGame() {
         isGameStarted = true;
+        startButton.setVisibility(View.GONE);
         cardDealer.postDelayed(new Runnable() {
             public void run() {
                 if (deck.getCardCount() > 0 && !isDoneDealing()) {
                     dealCard();
                     updateScreen();
                     cardDealer.postDelayed(this, 1000);
+                } else {
+                    doGameOver();
                 }
             }
         }, 1000);
     }
 
     public void dealCard() {
-        if (deck.getCardCount() > 0 && !haveBothDevicesPassedAllJacks()) {
+        if (deck.getCardCount() > 0) {
             if (topCard != null) {
                 if (topCard.getValue() == 11) {
                     numberOfJacksPassed++;
@@ -460,8 +475,6 @@ public class MainActivity extends ActionBarActivity {
                 Log.i(TAG, "Dealt Jack: #" + String.valueOf(numberOfJacksDealt));
             }
             pile.add(topCard);
-        } else {
-            doGameOver();
         }
     }
 
@@ -540,7 +553,8 @@ public class MainActivity extends ActionBarActivity {
         isGameStarted = false;
         isGameOver = true;
         startButton.setText("View Statistics");
-        cardPicture.setBackgroundResource(R.drawable._card_back);
+        startButton.setVisibility(View.VISIBLE);
+        restartButton.setVisibility(View.VISIBLE);
     }
 
     private Player determineWinner() {
@@ -548,43 +562,55 @@ public class MainActivity extends ActionBarActivity {
         String[] separated;
         for (int i = 0; i < mySlapTimes.size(); i++) {
             pileCount++;
-            if (mySlapTimes.get(i) != DEFAULTSLAPTIME) {
+            if (!mySlapTimes.get(i).equals(DEFAULTSLAPTIME)) { // i slapped
+                Log.i(TAG, String.valueOf(pileCount) + " || " + String.valueOf(i)  + " |1| original val: " + mySlapTimes.get(i));
                 separated = mySlapTimes.get(i).split("::");
-                if (connectedDeviceSlapTimes.get(i) != DEFAULTSLAPTIME) {
+                if (!connectedDeviceSlapTimes.get(i).equals(DEFAULTSLAPTIME)) { // they slapped too
                     int mySlapTime = Integer.parseInt(separated[0]);
                     separated = connectedDeviceSlapTimes.get(i).split("::");
                     int connectedDeviceSlapTime = Integer.parseInt(separated[0]);
-                    if (separated[1] == "true") {
+                    Log.i(TAG, "mine: " + mySlapTime + " vs. them: " + connectedDeviceSlapTime);
+                    Log.i(TAG, "does 'true' = " + separated[1]);
+                    if (separated[1].equals("true")) { // if we're fighting over a jack
                         if (mySlapTime < connectedDeviceSlapTime) {
+                            Log.i(TAG, "You slapped JACK faster.");
                             givePileToPlayer(pileCount, playerOne);
                         } else {
+                            Log.i(TAG, "You slapped JACK slower.");
                             givePileToPlayer(pileCount, playerTwo);
                         }
-                    } else {
+                    } else { // we both slapped a non-jack
+                        Log.i(TAG, "You both slapped a non-jack card.");
                         if (mySlapTime < connectedDeviceSlapTime) {
                             givePileToPlayer(pileCount, playerTwo);
                         } else {
                             givePileToPlayer(pileCount, playerOne);
                         }
                     }
-                } else {
-                    if (separated[1] == "true") {
+                } else { // I slapped, but they didn't
+                    if (separated[1].equals("true")) { // was jack
+                        Log.i(TAG, "You slapped the Jack but they didn't");
                         givePileToPlayer(pileCount, playerOne);
-                    } else {
+                    } else { // i slap non jack
+                        Log.i(TAG, "You slapped a non jack?");
                         givePileToPlayer(pileCount, playerTwo);
                     }
                 }
                 pileCount = 0;
-            } else if (connectedDeviceSlapTimes.get(i) != DEFAULTSLAPTIME) {
+            } else if (!connectedDeviceSlapTimes.get(i).equals(DEFAULTSLAPTIME)) { // they slap, i don't
+                Log.i(TAG, String.valueOf(pileCount) + " || " + String.valueOf(i) + " |2| original val: " + connectedDeviceSlapTimes.get(i));
                 separated = connectedDeviceSlapTimes.get(i).split("::");
-                if (separated[1] == "true") {
+                if (separated[1].equals("true")) { // they slap jack
                     givePileToPlayer(pileCount, playerTwo);
-                } else {
+                    Log.i(TAG, "Why didn't you slap the jack?");
+                } else { // they slap non jack
                     givePileToPlayer(pileCount, playerOne);
+                    Log.i(TAG, "They slapped the wrong card... lol");
                 }
                 pileCount = 0;
             }
         }
+        Log.i(TAG, "my score: " + String.valueOf(playerOne.getHandCount()) + " their score: " + String.valueOf(playerTwo.getHandCount()));
         return (playerOne.getHandCount() > playerTwo.getHandCount()) ? playerOne : playerTwo;
     }
 

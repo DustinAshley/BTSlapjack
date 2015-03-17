@@ -50,12 +50,6 @@
             android:padding="10dp"
             android:layout_gravity="center_horizontal" />
 
-        <TextView android:id="@+id/pileCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="center_horizontal" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,6 +119,13 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center|bottom">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Restart"
+                android:id="@+id/button_restart"
+                android:singleLine="false" />
 
             <Button
                 android:layout_width="match_parent"

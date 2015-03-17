@@ -11,6 +11,10 @@
     <string name="bt_setup_header">This screen is where you\'ll connect to another device.</string>
     <string name="practice_header">This screen is where you\'ll practice playing Slap Jack.</string>
 
+    <string name="statistics">Statistics</string>
+    <string name="button_close">Close</string>
+
+
     <!--  BluetoothChat -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device.</string>
