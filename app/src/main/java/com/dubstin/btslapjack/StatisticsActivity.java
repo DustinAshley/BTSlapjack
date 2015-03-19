@@ -1,58 +1,94 @@
 package com.dubstin.btslapjack;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
+import java.util.Random;
 
 public class StatisticsActivity extends ActionBarActivity {
 
-    ArrayList<String[]> mySlapTimes,
+    ArrayList<String> mySlapTimes,
         connectedDeviceSlapTimes;
-
     public static final int VIEW_STATS = 1;
-
+    private int SCREEN_WIDTH, SCREEN_HEIGHT;
     private static final String TAG = "Statistics Activity";
-
     private ImageButton cardPicture;
+    long deckSeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        Log.i(TAG, "Entered onCreate()");
         setContentView(R.layout.activity_statistics);
-
-        cardPicture = (ImageButton) findViewById(R.id.card1);
-        cardPicture.setOnClickListener(viewCardTimes);
-        cardPicture.setBackgroundResource(R.drawable._card_back);
-
-
         Intent in = getIntent();
+        mySlapTimes = in.getStringArrayListExtra("mySlapTimes");
+        connectedDeviceSlapTimes = in.getStringArrayListExtra("connectedDeviceSlapTimes");
+        deckSeed = in.getLongExtra("seed", 0);
+        Log.i(TAG, "seed: " + String.valueOf(deckSeed));
+        getScreenSize();
+        setupTable();
 
-        mySlapTimes = (ArrayList<String[]>) in.getSerializableExtra("mySlapTimes");
-        connectedDeviceSlapTimes = (ArrayList<String[]>) in.getSerializableExtra("connectedDeviceSlapTimes");
+    }
 
+    private void setupTable() {
+        Deck deck = new Deck(false, true);
+        Random rnd = new Random();
+        rnd.setSeed(deckSeed);
+        deck.shuffle(rnd);
+        List<Card> cards = deck.getCards();
+        for (int i = 1; i <= 54; i++) {
+            Log.i(TAG, "setting cardContainer" + String.valueOf(i));
+            int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
+            LinearLayout layout = (LinearLayout) findViewById(layoutID);
+            LayoutParams params = layout.getLayoutParams();
+            params.height = Integer.valueOf(SCREEN_HEIGHT / 12);
+            params.width = Integer.valueOf(SCREEN_WIDTH / 6);
+            int padding = ((SCREEN_WIDTH / 6) - ((params.height * 76) / 100)) / 2;
+            layout.setPadding(padding, 2, padding, 2);
+            int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
+            ImageButton button = (ImageButton) findViewById(cardButtonID);
+            button.setBackgroundResource(R.drawable._card_back);
+            button.setOnClickListener(viewCardTime);
+            String cardName = cards.get(i).valueToString().toLowerCase() + "_of_" + cards.get(i).suitToString().toLowerCase();
+            int resourceId = getResources().getIdentifier("_" + cardName, "drawable", getPackageName());
+            button.setBackgroundResource(resourceId);
+
+            //Log.i(TAG, "padding: " + String.valueOf(padding));
+            //Log.i(TAG, "h: " + String.valueOf(params.height) + " w: " + String.valueOf(params.width));
+
+        }
+    }
+
+    private void getScreenSize() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        SCREEN_WIDTH = size.x;
+        SCREEN_HEIGHT = size.y;
+        Log.i(TAG, "Screen Width: " + String.valueOf(SCREEN_WIDTH) + " Screen Height: " + String.valueOf(SCREEN_HEIGHT));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
-    private View.OnClickListener viewCardTimes = new View.OnClickListener() {
+    private View.OnClickListener viewCardTime = new View.OnClickListener() {
         public void onClick(View v) {
-            Log.i(TAG, "my time: " + mySlapTimes.get(1));
-            Log.i(TAG, "my time: " + connectedDeviceSlapTimes.get(1));
+            int cardID = Integer.parseInt(v.getResources().getResourceName(v.getId()).replace("card", ""));
+            Log.i(TAG, "my time: " + mySlapTimes.get(cardID));
+            Log.i(TAG, "connected device time: " + connectedDeviceSlapTimes.get(cardID));
         }
     };
 

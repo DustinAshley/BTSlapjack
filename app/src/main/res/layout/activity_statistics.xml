@@ -1,38 +1,551 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <TextView android:id="@+id/statistics_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pick a Card to view times."
-        android:background="#666"
-        android:textColor="#fff"
-        android:paddingLeft="5dp" />
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer1"
+            android:layout_width="57dp"
+            android:layout_height="75dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
-    <TextView android:id="@+id/list_amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="List Amount: ---"
-        android:background="#666"
-        android:textColor="#fff"
-        android:paddingLeft="5dp" />
+            <ImageButton
+                android:id="@+id/card1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer2"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer3"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer4"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card4"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer5"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card5"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer6"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card6"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:id="@+id/back_button" />
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer7"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card7"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer8"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card8"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer9"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card9"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer10"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card10"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer11"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card11"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer12"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card12"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
 
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer13"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card13"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer14"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card14"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer15"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card15"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer16"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card16"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer17"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card17"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer18"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card18"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/card1"
-        android:layout_gravity="center_horizontal">
-    </ImageButton>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer19"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card19"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer20"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card20"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer21"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card21"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer22"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card22"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer23"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card23"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer24"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card24"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
 
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer25"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card25"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer26"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card26"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer27"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card27"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer28"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card28"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer29"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card29"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer30"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card30"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
 
-</LinearLayout>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer31"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card31"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer32"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card32"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer33"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card33"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer34"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card34"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer35"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card35"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer36"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card36"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer37"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card37"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer38"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card38"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer39"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card39"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer40"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card40"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer41"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card41"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer42"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card42"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer43"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card43"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer44"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card44"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer45"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card45"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer46"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card46"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer47"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card47"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer48"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card48"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/cardContainer49"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card49"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer50"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card50"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer51"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card51"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer52"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card52"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer53"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card53"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cardContainer54"
+            android:layout_width="57dp"
+            android:layout_height="75dp">
+            <ImageButton
+                android:id="@+id/card54"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <Button android:id="@+id/close_button"
+            android:text="Close"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="6" />
+    </TableRow>
+
+    </TableLayout>

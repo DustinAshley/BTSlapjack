@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
@@ -68,7 +67,8 @@ public class MainActivity extends ActionBarActivity {
             numberOfDecks,
             cardNumber = -1;
     private long dealTimestamp,
-            slapTimestamp;
+            slapTimestamp,
+            deckSeed;
     private ArrayList<String> mySlapTimes = new ArrayList<String>(),
             connectedDeviceSlapTimes = new ArrayList<String>();
 
@@ -414,6 +414,7 @@ public class MainActivity extends ActionBarActivity {
                 Intent i = new Intent(MainActivity.this, StatisticsActivity.class);
                 i.putStringArrayListExtra("mySlapTimes", mySlapTimes);
                 i.putStringArrayListExtra("connectedDeviceSlapTimes", connectedDeviceSlapTimes);
+                i.putExtra("seed", deckSeed);
                 startActivity(i);
             } else if (!isGameStarted) {
                 isReadyToStart = true;
@@ -453,12 +454,12 @@ public class MainActivity extends ActionBarActivity {
                 if (deck.getCardCount() > 0 && !isDoneDealing()) {
                     dealCard();
                     updateScreen();
-                    cardDealer.postDelayed(this, 1000);
+                    cardDealer.postDelayed(this, (isDebugMode ? 100 : 1000));
                 } else {
                     doGameOver();
                 }
             }
-        }, 1000);
+        }, (isDebugMode ? 100 : 1000));
     }
 
     public void dealCard() {
@@ -694,9 +695,9 @@ public class MainActivity extends ActionBarActivity {
                             connectedDeviceBlueToothAddress = separated[1];
                             if (isPrimaryDevice()) {
                                 Random rnd = new Random();
-                                long seed = rnd.nextLong();
-                                sendBluetoothMessage("seed::" + String.valueOf(seed));
-                                rnd.setSeed(seed);
+                                deckSeed = rnd.nextLong();
+                                sendBluetoothMessage("seed::" + String.valueOf(deckSeed));
+                                rnd.setSeed(deckSeed);
                                 deck.shuffle(rnd);
                                 startButton.setVisibility(View.VISIBLE);
                             }
