@@ -25,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -415,6 +414,8 @@ public class MainActivity extends ActionBarActivity {
                 i.putStringArrayListExtra("mySlapTimes", mySlapTimes);
                 i.putStringArrayListExtra("connectedDeviceSlapTimes", connectedDeviceSlapTimes);
                 i.putExtra("seed", deckSeed);
+                i.putExtra("p1Name", playerOne.getName());
+                i.putExtra("p2Name", playerTwo.getName());
                 startActivity(i);
             } else if (!isGameStarted) {
                 isReadyToStart = true;
