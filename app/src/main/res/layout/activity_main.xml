@@ -16,11 +16,11 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center_horizontal">
 
-        <TextView android:id="@+id/praticeHeader"
+        <TextView android:id="@+id/deckCardCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/practice_header" />
+            android:padding="5dp"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
             android:id="@+id/cardContainer"
@@ -40,21 +40,14 @@
         <TextView android:id="@+id/topCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="Click deal to start!"
             android:layout_gravity="center_horizontal"/>
-
-        <TextView android:id="@+id/deckCardCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="..."
-            android:padding="10dp"
+            android:padding="5dp"
             android:id="@+id/slapTimestamp"
             android:singleLine="true"
             android:layout_gravity="center_horizontal" />
@@ -107,7 +100,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/winner"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="-"
             android:padding="10dp"
             android:layout_below="@+id/playerOneName"
             android:layout_alignParentLeft="true"

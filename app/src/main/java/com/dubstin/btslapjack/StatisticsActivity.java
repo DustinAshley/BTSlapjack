@@ -1,9 +1,7 @@
 package com.dubstin.btslapjack;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Point;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,12 +9,11 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,7 +29,6 @@ public class StatisticsActivity extends ActionBarActivity {
     long deckSeed;
     private static final String TAG = "Statistics Activity",
         DEFAULTSLAPTIME = String.valueOf(Integer.MAX_VALUE) + "::false";
-    private ImageButton cardPicture;
     private TextView playerOneName,
             playerTwoName,
             playerOneTime,
@@ -51,16 +47,14 @@ public class StatisticsActivity extends ActionBarActivity {
         Log.i(TAG, "seed: " + String.valueOf(deckSeed));
         getScreenSize();
         setupTable();
-
-
         playerOneName = (TextView) findViewById(R.id.playerOneName);
         playerTwoName = (TextView) findViewById(R.id.playerTwoName);
         playerOneTime = (TextView) findViewById(R.id.playerOneTime);
         playerTwoTime = (TextView) findViewById(R.id.playerTwoTime);
-
         playerOneName.setText(in.getStringExtra("p1Name"));
         playerTwoName.setText(in.getStringExtra("p2Name"));
-
+        Button closeButton = (Button) findViewById(R.id.close_button);
+        closeButton.setOnClickListener(closeActivity);
     }
 
     @Override
@@ -82,16 +76,17 @@ public class StatisticsActivity extends ActionBarActivity {
         deck.shuffle(rnd);
         List<Card> cards = deck.getCards();
         for (int i = 1; i <= 54; i++) {
-            Log.i(TAG, "setting cardContainer" + String.valueOf(i));                int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
+            Log.i(TAG, "setting cardContainer" + String.valueOf(i));
+            int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
             ImageButton button = (ImageButton) findViewById(cardButtonID);
+            int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
+            LinearLayout layout = (LinearLayout) findViewById(layoutID);
+            LayoutParams params = layout.getLayoutParams();
+            params.height = Integer.valueOf((SCREEN_HEIGHT - 32) / 14);
+            params.width = Integer.valueOf((SCREEN_WIDTH - 32) / 7);
+            int padding = (params.width - ((params.height * 76) / 100)) / 3;
+            layout.setPadding(padding, 2, padding, 2);
             if (i <= 54 - unusedCardsAmount) {
-                int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
-                LinearLayout layout = (LinearLayout) findViewById(layoutID);
-                LayoutParams params = layout.getLayoutParams();
-                params.height = Integer.valueOf((SCREEN_HEIGHT - 32) / 12);
-                params.width = Integer.valueOf((SCREEN_WIDTH - 32) / 6);
-                int padding = ((SCREEN_WIDTH / 6) - ((params.height * 76) / 100)) / 2;
-                layout.setPadding(padding, 2, padding, 2);
                 button.setOnClickListener(viewCardTime);
                 if (!mySlapTimes.get(i - 1).equals(DEFAULTSLAPTIME)
                         || !connectedDeviceSlapTimes.get(i - 1).equals(DEFAULTSLAPTIME)) {
@@ -120,19 +115,22 @@ public class StatisticsActivity extends ActionBarActivity {
 
     private View.OnClickListener viewCardTime = new View.OnClickListener() {
         public void onClick(View v) {
-            Log.i(TAG, "cardID: " + v.getResources().getResourceName(v.getId()).replaceAll(".*card", ""));
             int cardID = Integer.parseInt(v.getResources().getResourceName(v.getId()).replaceAll(".*card", ""));
             String[] separated = mySlapTimes.get(cardID - 1).split("::");
             setTimeLabel(playerOneTime, separated[0]);
             separated = connectedDeviceSlapTimes.get(cardID - 1).split("::");
             setTimeLabel(playerTwoTime, separated[0]);
-            Log.i(TAG, "my time: " + mySlapTimes.get(cardID - 1));
-            Log.i(TAG, "connected device time: " + connectedDeviceSlapTimes.get(cardID - 1));
         }
     };
 
+    private View.OnClickListener closeActivity = new View.OnClickListener() {
+        public void onClick(View v) {
+            finish();
+        }
+    };
+
+
     private void setTimeLabel(TextView v, String text) {
-        Log.i(TAG, text + "==" + String.valueOf(Integer.MAX_VALUE + "?"));
         if (!text.equals(String.valueOf(Integer.MAX_VALUE))) {
             v.setText(String.valueOf((Double.parseDouble(text) / 1000)) + " seconds");
         } else {

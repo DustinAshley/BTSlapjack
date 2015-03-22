@@ -249,7 +249,6 @@ public class MainActivity extends ActionBarActivity {
         }
         if (isConnected) {
             showGameContainer();
-            sendBluetoothMessage("id::" + bluetoothAddress);
         }
     }
 
@@ -457,8 +456,6 @@ public class MainActivity extends ActionBarActivity {
                     dealCard();
                     updateScreen();
                     cardDealer.postDelayed(this, (isDebugMode ? 100 : 1000));
-                } else {
-                    doGameOver();
                 }
             }
         }, (isDebugMode ? 100 : 1000));
@@ -531,10 +528,7 @@ public class MainActivity extends ActionBarActivity {
             topCard = null;
             showCard(topCard);
             if (haveBothDevicesPassedAllJacks()) {
-                Player winner = determineWinner();
-                winnerLabel.setText(winner.getName()
-                        + (winner == playerOne ? " win!" : " wins!"));
-                updateScreen();
+                doGameOver();
             }
             pile.clear();
         }
@@ -558,6 +552,10 @@ public class MainActivity extends ActionBarActivity {
         startButton.setText("View Statistics");
         startButton.setVisibility(View.VISIBLE);
         restartButton.setVisibility(View.VISIBLE);
+        Player winner = determineWinner();
+        winnerLabel.setText(winner.getName()
+                + (winner == playerOne ? " win!" : " wins!"));
+        updateScreen();
     }
 
     private Player determineWinner() {
@@ -699,6 +697,7 @@ public class MainActivity extends ActionBarActivity {
                                 Random rnd = new Random();
                                 deckSeed = rnd.nextLong();
                                 sendBluetoothMessage("seed::" + String.valueOf(deckSeed));
+                                Log.i(TAG, "seeding with:" + String.valueOf(deckSeed));
                                 rnd.setSeed(deckSeed);
                                 deck.shuffle(rnd);
                                 startButton.setVisibility(View.VISIBLE);
@@ -722,10 +721,7 @@ public class MainActivity extends ActionBarActivity {
                             Log.i(TAG, "Got 'all Jacks passed' signal.");
                             didConnectedDevicePassAllJacks = true;
                             if (haveBothDevicesPassedAllJacks()) {
-                                Player winner = determineWinner();
-                                winnerLabel.setText(winner.getName()
-                                        + (winner == playerOne ? " win!" : " wins!"));
-                                updateScreen();
+                                doGameOver();
                             }
                             break;
                         default:
