@@ -414,6 +414,7 @@ public class MainActivity extends ActionBarActivity {
                 i.putStringArrayListExtra("mySlapTimes", mySlapTimes);
                 i.putStringArrayListExtra("connectedDeviceSlapTimes", connectedDeviceSlapTimes);
                 i.putExtra("seed", deckSeed);
+                i.putExtra("cardsRemaining", deck.getCardCount());
                 i.putExtra("p1Name", playerOne.getName());
                 i.putExtra("p2Name", playerTwo.getName());
                 startActivity(i);
@@ -706,7 +707,8 @@ public class MainActivity extends ActionBarActivity {
                         case "seed":
                             Log.i(TAG, "Got Deck Seed: " + separated[1]);
                             Random rnd = new Random();
-                            rnd.setSeed(Long.parseLong(separated[1]));
+                            deckSeed = Long.parseLong(separated[1]);
+                            rnd.setSeed(deckSeed);
                             Log.i(TAG, "seeding with:" + String.valueOf(Long.parseLong(separated[1])));
                             deck.shuffle(rnd);
                             startButton.setVisibility(View.VISIBLE);

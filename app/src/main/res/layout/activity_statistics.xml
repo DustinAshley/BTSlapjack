@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" >
 
     <TableRow
         android:layout_width="fill_parent"
@@ -552,37 +557,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/playerOneName"
-                android:text="P1Name"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:paddingLeft="@dimen/activity_horizontal_margin" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/playerTwoName"
-                android:text="P2Name"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/playerTwoTime"
-                android:text="P2Time"
-                android:layout_below="@+id/playerTwoName"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:paddingRight="@dimen/activity_horizontal_margin" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/playerOneTime"
-                android:text="P1Time"
                 android:layout_below="@+id/playerOneName"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:paddingLeft="@dimen/activity_horizontal_margin" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/playerTwoTime"
+                android:layout_below="@+id/playerTwoName"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingRight="@dimen/activity_horizontal_margin" />
+
 
         </RelativeLayout>
 

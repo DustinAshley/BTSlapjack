@@ -3,14 +3,18 @@ package com.dubstin.btslapjack;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,7 +26,9 @@ public class StatisticsActivity extends ActionBarActivity {
     ArrayList<String> mySlapTimes,
         connectedDeviceSlapTimes;
     public static final int VIEW_STATS = 1;
-    private int SCREEN_WIDTH, SCREEN_HEIGHT;
+    private int unusedCardsAmount;
+    private int SCREEN_WIDTH,
+            SCREEN_HEIGHT;
     long deckSeed;
     private static final String TAG = "Statistics Activity",
         DEFAULTSLAPTIME = String.valueOf(Integer.MAX_VALUE) + "::false";
@@ -41,9 +47,11 @@ public class StatisticsActivity extends ActionBarActivity {
         mySlapTimes = in.getStringArrayListExtra("mySlapTimes");
         connectedDeviceSlapTimes = in.getStringArrayListExtra("connectedDeviceSlapTimes");
         deckSeed = in.getLongExtra("seed", 0);
+        unusedCardsAmount = in.getIntExtra("cardsRemaining", 0);
         Log.i(TAG, "seed: " + String.valueOf(deckSeed));
         getScreenSize();
         setupTable();
+
 
         playerOneName = (TextView) findViewById(R.id.playerOneName);
         playerTwoName = (TextView) findViewById(R.id.playerTwoName);
@@ -55,6 +63,18 @@ public class StatisticsActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void setupTable() {
         Deck deck = new Deck(false, true);
         Random rnd = new Random();
@@ -62,44 +82,30 @@ public class StatisticsActivity extends ActionBarActivity {
         deck.shuffle(rnd);
         List<Card> cards = deck.getCards();
         for (int i = 1; i <= 54; i++) {
-
-                        Log.i(TAG, "setting cardContainer" + String.valueOf(i));
-                        int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
-                        LinearLayout layout = (LinearLayout) findViewById(layoutID);
-                        LayoutParams params = layout.getLayoutParams();
-                        params.height = Integer.valueOf(SCREEN_HEIGHT / 12);
-                        params.width = Integer.valueOf(SCREEN_WIDTH / 6);
-                        int padding = ((SCREEN_WIDTH / 6) - ((params.height * 76) / 100)) / 2;
-                        layout.setPadding(padding, 2, padding, 2);
-                        int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
-                        ImageButton button = (ImageButton) findViewById(cardButtonID);
-                        button.setBackgroundResource(R.drawable._card_back);
-                        button.setOnClickListener(viewCardTime);
-            /*
-            int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
-            LinearLayout layout = (LinearLayout) findViewById(layoutID);
-            LayoutParams params = layout.getLayoutParams();
-            params.height = Integer.valueOf(SCREEN_HEIGHT / 12);
-            params.width = Integer.valueOf(SCREEN_WIDTH / 6);
-            int padding = ((SCREEN_WIDTH / 6) - ((params.height * 76) / 100)) / 2;
-            layout.setPadding(padding, 2, padding, 2);
-            int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
+            Log.i(TAG, "setting cardContainer" + String.valueOf(i));                int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
             ImageButton button = (ImageButton) findViewById(cardButtonID);
-            button.setOnClickListener(viewCardTime);
-            String cardName = cards.get(i).valueToString().toLowerCase() + "_of_" + cards.get(i).suitToString().toLowerCase();
-            if (!mySlapTimes.get(i).equals(DEFAULTSLAPTIME)
-                    || !connectedDeviceSlapTimes.get(i).equals(DEFAULTSLAPTIME)) {
-                button.setBackgroundResource(R.drawable._card_back);
-                Log.i(TAG, "DID SLAP: setting cardContainer" + String.valueOf(i));
+            if (i <= 54 - unusedCardsAmount) {
+                int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
+                LinearLayout layout = (LinearLayout) findViewById(layoutID);
+                LayoutParams params = layout.getLayoutParams();
+                params.height = Integer.valueOf((SCREEN_HEIGHT - 32) / 12);
+                params.width = Integer.valueOf((SCREEN_WIDTH - 32) / 6);
+                int padding = ((SCREEN_WIDTH / 6) - ((params.height * 76) / 100)) / 2;
+                layout.setPadding(padding, 2, padding, 2);
+                button.setOnClickListener(viewCardTime);
+                if (!mySlapTimes.get(i - 1).equals(DEFAULTSLAPTIME)
+                        || !connectedDeviceSlapTimes.get(i - 1).equals(DEFAULTSLAPTIME)) {
+                    String cardName = cards.get(i - 1).valueToString().toLowerCase() + "_of_" + cards.get(i - 1).suitToString().toLowerCase();
+                    int resourceId = getResources().getIdentifier("_" + cardName, "drawable", getPackageName());
+                    button.setBackgroundResource(resourceId);
+                    Log.i(TAG, "DID SLAP: setting cardContainer" + String.valueOf(i));
+                } else {
+                    button.setBackgroundResource(R.drawable._card_back);
+                    Log.i(TAG, "NO SLAP: setting cardContainer" + String.valueOf(i));
+                }
             } else {
-                int resourceId = getResources().getIdentifier("_" + cardName, "drawable", getPackageName());
-                button.setBackgroundResource(resourceId);
-                Log.i(TAG, "NO SLAP: setting cardContainer" + String.valueOf(i));
+                button.setVisibility(View.GONE);
             }
-
-            */
-            //Log.i(TAG, "padding: " + String.valueOf(padding));
-            //Log.i(TAG, "h: " + String.valueOf(params.height) + " w: " + String.valueOf(params.width));
         }
     }
 
@@ -112,24 +118,27 @@ public class StatisticsActivity extends ActionBarActivity {
         Log.i(TAG, "Screen Width: " + String.valueOf(SCREEN_WIDTH) + " Screen Height: " + String.valueOf(SCREEN_HEIGHT));
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     private View.OnClickListener viewCardTime = new View.OnClickListener() {
         public void onClick(View v) {
             Log.i(TAG, "cardID: " + v.getResources().getResourceName(v.getId()).replaceAll(".*card", ""));
             int cardID = Integer.parseInt(v.getResources().getResourceName(v.getId()).replaceAll(".*card", ""));
             String[] separated = mySlapTimes.get(cardID - 1).split("::");
-            playerOneTime.setText(separated[0]);
+            setTimeLabel(playerOneTime, separated[0]);
             separated = connectedDeviceSlapTimes.get(cardID - 1).split("::");
-            playerTwoTime.setText(separated[0]);
+            setTimeLabel(playerTwoTime, separated[0]);
             Log.i(TAG, "my time: " + mySlapTimes.get(cardID - 1));
             Log.i(TAG, "connected device time: " + connectedDeviceSlapTimes.get(cardID - 1));
         }
     };
 
+    private void setTimeLabel(TextView v, String text) {
+        Log.i(TAG, text + "==" + String.valueOf(Integer.MAX_VALUE + "?"));
+        if (!text.equals(String.valueOf(Integer.MAX_VALUE))) {
+            v.setText(String.valueOf((Double.parseDouble(text) / 1000)) + " seconds");
+        } else {
+            v.setText("No contest");
+        }
 
+    }
 
 }
