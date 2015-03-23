@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,13 +65,6 @@ public class MainActivity extends ActionBarActivity {
     private long dealTimestamp,
             slapTimestamp,
             deckSeed;
-    private ArrayList<String> mySlapTimes = new ArrayList<String>(),
-            connectedDeviceSlapTimes = new ArrayList<String>();
-    private Button mainButton,
-            startButton,
-            restartButton;
-    LinearLayout gameContainer,
-            connectContainer;
     private boolean isConnected = false,
             isReadyToStart = false,
             isConnectedDeviceReadyToStart = false,
@@ -78,6 +72,14 @@ public class MainActivity extends ActionBarActivity {
             didPassAllJacks = false,
             didConnectedDevicePassAllJacks = false,
             isGameOver = false;
+    private ArrayList<String> mySlapTimes = new ArrayList<String>(),
+            connectedDeviceSlapTimes = new ArrayList<String>();
+    private Button mainButton,
+            startButton,
+            restartButton;
+    private LinearLayout gameContainer,
+            connectContainer;
+    private RelativeLayout scoreContainer;
     private TextView title,
             deckCountLabel,
             playerOneNameLabel,
@@ -277,6 +279,7 @@ public class MainActivity extends ActionBarActivity {
     private void initializeContainers() {
         gameContainer = (LinearLayout) findViewById(R.id.gameContainer);
         connectContainer = (LinearLayout) findViewById(R.id.connectContainer);
+        scoreContainer = (RelativeLayout) findViewById(R.id.scoreContainer);
         if (!isConnected) {
             showConnectContainer();
         } else {
@@ -548,6 +551,7 @@ public class MainActivity extends ActionBarActivity {
         startButton.setVisibility(View.VISIBLE);
         restartButton.setVisibility(View.VISIBLE);
         Player winner = determineWinner();
+        scoreContainer.setVisibility(View.VISIBLE);
         winnerLabel.setText(winner.getName()
                 + (winner == playerOne ? " win!" : " wins!"));
         updateScreen();
