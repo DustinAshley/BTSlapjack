@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,8 +33,6 @@ import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
     private static final boolean isDebugMode = true;
-
-    // Message types sent from the BluetoothCommunicationService Handler
     public static final int MESSAGE_STATE_CHANGE = 1,
             MESSAGE_READ = 2,
             MESSAGE_WRITE = 3,
@@ -42,11 +41,9 @@ public class MainActivity extends ActionBarActivity {
             MESSAGE_SAVE_DEVICE = 6,
             REQUEST_CONNECT_DEVICE = 1,
             REQUEST_ENABLE_BT = 2;
-
     public static final String PREFS_LAST_DEVICE = "LastDevice",
             DEVICE_NAME = "device_name",
             TOAST = "toast";
-
     private static final String TAG = "Bluetooth Slap Jack",
             KEY_DECK = "deckCards",
             KEY_PILECARDS = "pileCards",
@@ -59,7 +56,6 @@ public class MainActivity extends ActionBarActivity {
             KEY_PLAYER2NAME = "playerTwoName",
             KEY_ISCONNECTED = "isConnected",
             DEFAULTSLAPTIME = String.valueOf(Integer.MAX_VALUE) + "::false";
-
     private int SCREEN_WIDTH, SCREEN_HEIGHT,
             numberOfJacksDealt = 0,
             numberOfJacksPassed = 0,
@@ -70,7 +66,6 @@ public class MainActivity extends ActionBarActivity {
             deckSeed;
     private ArrayList<String> mySlapTimes = new ArrayList<String>(),
             connectedDeviceSlapTimes = new ArrayList<String>();
-
     private Button mainButton,
             startButton,
             restartButton;
@@ -85,7 +80,6 @@ public class MainActivity extends ActionBarActivity {
             isGameOver = false;
     private TextView title,
             deckCountLabel,
-            pileCountLabel,
             playerOneNameLabel,
             playerTwoNameLabel,
             playerOneHandCountLabel,
@@ -280,6 +274,16 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void initializeContainers() {
+        gameContainer = (LinearLayout) findViewById(R.id.gameContainer);
+        connectContainer = (LinearLayout) findViewById(R.id.connectContainer);
+        if (!isConnected) {
+            showConnectContainer();
+        } else {
+            showGameContainer();
+        }
+    }
+
     private void toggleView() {
         if (gameContainer.getVisibility() == View.VISIBLE) {
             showConnectContainer();
@@ -318,22 +322,13 @@ public class MainActivity extends ActionBarActivity {
         startButton.setVisibility(View.INVISIBLE);
     }
 
-    private void initializeContainers() {
-        gameContainer = (LinearLayout) findViewById(R.id.gameContainer);
-        connectContainer = (LinearLayout) findViewById(R.id.connectContainer);
-        if (!isConnected) {
-            showConnectContainer();
-        } else {
-            showGameContainer();
-        }
-    }
-
     private void setScreenSize() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         SCREEN_WIDTH = size.x;
         SCREEN_HEIGHT = size.y;
+        Log.i(TAG, "Screen Width: " + String.valueOf(SCREEN_WIDTH) + " Screen Height: " + String.valueOf(SCREEN_HEIGHT));
     }
 
     private void initializeLabels() {
