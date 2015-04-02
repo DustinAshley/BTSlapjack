@@ -299,7 +299,7 @@ public class MainActivity extends ActionBarActivity {
         if (isDebugMode) {
             Log.d(TAG, "Entered setupGame()");
         }
-        restartButton.setVisibility(View.GONE);
+        restartButton.setVisibility(View.INVISIBLE);
         startButton.setVisibility(View.VISIBLE);
         if (!isConnected) {
             bluetoothCommunicationService = new BluetoothCommunicationService(this, bluetoothMessageHandler);
@@ -353,6 +353,8 @@ public class MainActivity extends ActionBarActivity {
         mainButton.setOnClickListener(goToMain);
         cardPicture = (ImageButton) findViewById(R.id.cardPicture);
         cardPicture.setOnClickListener(doSlapCard);
+        cardPicture.getLayoutParams().width = (cardPicture.getLayoutParams().height * 76) / 100;
+        cardPicture.requestLayout();
         startButton = (Button) findViewById(R.id.button_start);
         startButton.setOnClickListener(startButtonClick);
         restartButton = (Button) findViewById(R.id.button_restart);
@@ -447,7 +449,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void startGame() {
         isGameStarted = true;
-        startButton.setVisibility(View.GONE);
+        startButton.setVisibility(View.INVISIBLE);
         cardDealer.postDelayed(new Runnable() {
             public void run() {
                 if (deck.getCardCount() > 0 && !isDoneDealing()) {

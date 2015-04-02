@@ -6,13 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,13 +54,6 @@ public class StatisticsActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return true;
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -79,21 +68,18 @@ public class StatisticsActivity extends ActionBarActivity {
             Log.i(TAG, "setting cardContainer" + String.valueOf(i));
             int cardButtonID = getResources().getIdentifier("card" + String.valueOf(i), "id", getPackageName());
             ImageButton button = (ImageButton) findViewById(cardButtonID);
-            int layoutID = getResources().getIdentifier("cardContainer" + String.valueOf(i), "id", getPackageName());
-            LinearLayout layout = (LinearLayout) findViewById(layoutID);
-            LayoutParams params = layout.getLayoutParams();
-            params.height = Integer.valueOf((SCREEN_HEIGHT - 32) / 14);
-            params.width = Integer.valueOf((SCREEN_WIDTH - 32) / 7);
-            int padding = (params.width - ((params.height * 76) / 100)) / 3;
-            layout.setPadding(padding, 2, padding, 2);
             if (i <= 54 - unusedCardsAmount) {
                 button.setOnClickListener(viewCardTime);
                 if (!mySlapTimes.get(i - 1).equals(DEFAULTSLAPTIME)
                         || !connectedDeviceSlapTimes.get(i - 1).equals(DEFAULTSLAPTIME)) {
-                    String cardName = cards.get(i - 1).valueToString().toLowerCase() + "_of_" + cards.get(i - 1).suitToString().toLowerCase();
-                    int resourceId = getResources().getIdentifier("_" + cardName, "drawable", getPackageName());
-                    button.setBackgroundResource(resourceId);
-                    Log.i(TAG, "DID SLAP: setting cardContainer" + String.valueOf(i));
+                    if (cards.get(i - 1).suitToString().toLowerCase().equals("joker")) {
+                        button.setBackgroundResource(R.drawable._black_joker);
+                    } else {
+                        String cardName = cards.get(i - 1).valueToString().toLowerCase() + "_of_" + cards.get(i - 1).suitToString().toLowerCase();
+                        int resourceId = getResources().getIdentifier("_" + cardName, "drawable", getPackageName());
+                        button.setBackgroundResource(resourceId);
+                        Log.i(TAG, "DID SLAP: setting cardContainer" + String.valueOf(i));
+                    }
                 } else {
                     button.setBackgroundResource(R.drawable._card_back);
                     Log.i(TAG, "NO SLAP: setting cardContainer" + String.valueOf(i));
