@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +89,15 @@ public class StatisticsActivity extends ActionBarActivity {
                 button.setVisibility(View.GONE);
             }
         }
+
+        for (int i = 1; i <= 9; i++) {
+            int rowID = getResources().getIdentifier("cardRow" + String.valueOf(i), "id", getPackageName());
+            LinearLayout ll = (LinearLayout) findViewById(rowID);
+            ll.getLayoutParams().height = (((SCREEN_WIDTH / 6) * 100) / 68);
+            ll.requestLayout();
+            Log.i(TAG, "ROW" + String.valueOf(i) + ": " + String.valueOf(ll.getLayoutParams().height));
+        }
+
     }
 
     private void getScreenSize() {

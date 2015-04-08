@@ -74,22 +74,14 @@ public class Card implements Parcelable {
             switch ( value ) {
                 case 1:
                     return "Ace";
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                case 8:
-                case 9:
-                case 10:
-                    return Integer.toString(value);
                 case 11:
                     return "Jack";
                 case 12:
                     return "Queen";
-                default:
+                case 13:
                     return "King";
+                default:
+                    return Integer.toString(value);
             }
         }
 

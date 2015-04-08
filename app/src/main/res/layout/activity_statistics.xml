@@ -10,22 +10,28 @@
     android:layout_height="match_parent"
     android:weightSum="10" >
 
-    <TableLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:id="@+id/scrollView" >
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:weightSum="18"
-        android:layout_weight="8">
+        android:layout_height="wrap_content">
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:orientation="horizontal"
+            android:id="@+id/cardRow1" >
+
             <LinearLayout
                 android:id="@+id/cardContainer1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -38,8 +44,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -53,8 +59,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer3"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -67,8 +73,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer4"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -81,8 +87,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer5"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -95,8 +101,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer6"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -107,17 +113,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow2">
             <LinearLayout
                 android:id="@+id/cardContainer7"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -130,8 +136,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer8"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -144,8 +150,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer9"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -158,8 +164,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer10"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -172,8 +178,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer11"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -186,8 +192,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer12"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -198,17 +204,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow3">
             <LinearLayout
                 android:id="@+id/cardContainer13"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -221,8 +227,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer14"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -235,8 +241,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer15"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -249,8 +255,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer16"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -263,8 +269,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer17"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -277,8 +283,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer18"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -289,17 +295,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow4">
             <LinearLayout
                 android:id="@+id/cardContainer19"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -312,8 +318,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer20"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -326,8 +332,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer21"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -340,8 +346,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer22"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -354,8 +360,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer23"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -368,8 +374,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer24"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -380,17 +386,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow5">
             <LinearLayout
                 android:id="@+id/cardContainer25"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -403,8 +409,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer26"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -417,8 +423,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer27"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -431,8 +437,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer28"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -445,8 +451,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer29"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -459,8 +465,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer30"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -471,17 +477,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow6">
             <LinearLayout
                 android:id="@+id/cardContainer31"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -494,8 +500,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer32"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -508,8 +514,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer33"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -522,8 +528,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer34"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -536,8 +542,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer35"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -550,8 +556,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer36"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -562,17 +568,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow7">
             <LinearLayout
                 android:id="@+id/cardContainer37"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -585,8 +591,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer38"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -599,8 +605,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer39"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -613,8 +619,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer40"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -627,8 +633,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer41"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -641,8 +647,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer42"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -653,17 +659,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow8">
             <LinearLayout
                 android:id="@+id/cardContainer43"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -676,8 +682,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer44"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -690,8 +696,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer45"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -704,8 +710,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer46"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -718,8 +724,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer47"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -732,8 +738,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer48"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -744,17 +750,17 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-        <TableRow
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:weightSum="6">
+            android:layout_height="100dp"
+            android:weightSum="6"
+            android:id="@+id/cardRow9">
             <LinearLayout
                 android:id="@+id/cardContainer49"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -767,8 +773,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer50"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -781,8 +787,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer51"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -795,8 +801,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer52"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -809,8 +815,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer53"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -823,8 +829,8 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/cardContainer54"
-                android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_width="50dp"
+                android:layout_height="fill_parent"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
@@ -835,9 +841,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
-        </TableRow>
+        </LinearLayout>
 
-    </TableLayout>
+    </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:orientation="vertical"
@@ -889,6 +897,7 @@
 
 
         </RelativeLayout>
+
 
         <Button android:id="@+id/close_button"
             android:text="Close"
