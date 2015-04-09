@@ -93,7 +93,7 @@ public class StatisticsActivity extends ActionBarActivity {
         for (int i = 1; i <= 9; i++) {
             int rowID = getResources().getIdentifier("cardRow" + String.valueOf(i), "id", getPackageName());
             LinearLayout ll = (LinearLayout) findViewById(rowID);
-            ll.getLayoutParams().height = (((SCREEN_WIDTH / 6) * 100) / 68);
+            ll.getLayoutParams().height = (((SCREEN_WIDTH / 6) * 85) / 100);
             ll.requestLayout();
             Log.i(TAG, "ROW" + String.valueOf(i) + ": " + String.valueOf(ll.getLayoutParams().height));
         }

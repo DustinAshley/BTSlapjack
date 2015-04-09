@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
-    private static final boolean isDebugMode = true;
+    private static final boolean isDebugMode = false;
     public static final int MESSAGE_STATE_CHANGE = 1,
             MESSAGE_READ = 2,
             MESSAGE_WRITE = 3,
